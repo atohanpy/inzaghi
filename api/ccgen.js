@@ -24,17 +24,18 @@ function generateCard(prefix = '4', length = 16) {
 
 function generateExpiry() {
   const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-  const year = String(Math.floor(Math.random() * 10) + 23); // 2023-2032 arası
+  const year = String(Math.floor(Math.random() * 10) + 23);
   return `${month}|${year}`;
 }
 
 function generateCVV() {
-  return String(Math.floor(Math.random() * 900) + 100); // 100-999 arası
+  return String(Math.floor(Math.random() * 900) + 100);
 }
 
 export default function handler(req, res) {
   const card = generateCard();
   const expiry = generateExpiry();
   const cvv = generateCVV();
-  res.status(200).json({ card, expiry, cvv, full: `${card}|${expiry}|${cvv}` });
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).send(JSON.stringify({ card, expiry, cvv, full: `${card}|${expiry}|${cvv}` }, null, 2));
 }
